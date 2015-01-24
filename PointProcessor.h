@@ -7,5 +7,7 @@ class PointProcessor : public QObject
   
   public slots:
     bool Menu_Test_Test(Image& image);
+    bool Menu_Test_MyNegate(Image& image);
+    bool Menu_Test_LUNegate(Image& image);
 };
 
