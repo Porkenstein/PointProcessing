@@ -1,11 +1,14 @@
 #include <qtimagelib.h>
-#include "PointProcessor.h"
+#include "DanProcessor.h"
+#include "DerekProcessor.h"
 
 int main(int argc, char** argv)
 {
-  PointProcessor obj;
+  DanProcessor obj1;
+  DerekProcessor obj2;
   ImageApp app(argc, argv);
-  app.AddActions(&obj);
+  app.addActions(&obj1);
+  app.AddActions(&obj2);
   return app.Start();
 }
 

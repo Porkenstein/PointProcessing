@@ -1,4 +1,4 @@
-HEADERS += PointProcessor.h
-SOURCES += prog1.cpp PointProcessor.cpp
+HEADERS += DanProcessor.h DerekProcessor.h
+SOURCES += prog1.cpp DanProcessor.cpp DerekProcessor.cpp
 CONFIG += qtimagelib
 
