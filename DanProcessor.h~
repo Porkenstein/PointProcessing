@@ -4,6 +4,12 @@
 class DanProcessor : public QObject
 {
   Q_OBJECT;
+<<<<<<< HEAD
+
+  public slots:
+    bool Menu_DanProcesses_NegateImage(Image& image);
+};
+=======
   
   public slots:
     
