@@ -75,3 +75,4 @@ bool ImageLibProcessor::Menu_ImageLibFunctions_EqualizeWithClipping(Image& image
     getParams(arg);
     return histogramEqualizeClip(image, (float)arg);
 }
+

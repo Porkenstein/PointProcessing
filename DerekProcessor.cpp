@@ -31,3 +31,4 @@ bool DerekProcessor::Menu_DerekProcesses_NegateImage(Image& image)
 
   return true;
 }
+

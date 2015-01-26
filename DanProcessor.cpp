@@ -79,21 +79,10 @@ bool Menu_DanFunctions_BinaryThreshold(Image& image)
   for (int i = 0; i < 255; i++)
     lutable[i] = (i < threshold ? 0 : 255);
   
->>>>>>> bc10c62cea9fe874e687def38037d4fddb6c0ef6
   for (int i = 0; i < rows; i++)
   {
     for (int j = 0; j < cols; j++)
     {
-<<<<<<< HEAD
-      image[i][j].SetRed(memory[0][image[i][j].Red()]);
-      image[i][j].SetGreen(memory[1][image[i][j].Green()]);
-      image[i][j].SetBlue(memory[2][image[i][j].Blue()]);
-    }
-  }
-
-  return true;
-}
-=======
       // Perform binary thresholding
       image[i][j].SetGray(lutable[image[i][j].Red()]);
     }
@@ -145,4 +134,3 @@ bool Menu_DanFunctions_LinearContrast(Image& image)
   return false;
 }
 
->>>>>>> bc10c62cea9fe874e687def38037d4fddb6c0ef6

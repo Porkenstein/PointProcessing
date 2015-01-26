@@ -20,3 +20,4 @@ class ImageLibProcessor : public QObject
     bool Menu_ImageLibFunctions_Equalize(Image& image);
     bool Menu_ImageLibFunctions_EqualizeWithClipping(Image& image);
 };
+

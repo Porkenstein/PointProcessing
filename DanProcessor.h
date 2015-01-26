@@ -16,4 +16,3 @@ class DanProcessor : public QObject
     
 };
 
->>>>>>> bc10c62cea9fe874e687def38037d4fddb6c0ef6

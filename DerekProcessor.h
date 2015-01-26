@@ -8,3 +8,4 @@ class DerekProcessor : public QObject
   public slots:
     bool Menu_DerekProcesses_NegateImage(Image& image);
 };
+
