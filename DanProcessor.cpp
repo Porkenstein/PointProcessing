@@ -8,10 +8,10 @@ bool DanProcessor::Menu_DanFunctions_Negate(Image& image)
   int rows = image.Height();
   int cols = image.Width();
   
-  unsigned char lutable[255] = {0};
+  unsigned char lutable[256] = {0};
   
   // Build lookup table
-  for (int i = 0; i < 255; i++)
+  for (int i = 0; i < 256; i++)
     lutable[i] = 255-i;
   
   for (int i = 0; i < rows; i++)
@@ -56,7 +56,7 @@ bool DanProcessor::Menu_DanFunctions_Grayscale(Image& image)
   return true;
 }
 
-bool Menu_DanFunctions_BinaryThreshold(Image& image)
+bool DanProcessor::Menu_DanFunctions_BinaryThreshold(Image& image)
 {
   if (image.IsNull())
     return false;
@@ -65,18 +65,19 @@ bool Menu_DanFunctions_BinaryThreshold(Image& image)
   int cols = image.Width();
   
   int threshold;
-  unsigned char lutable[255] = {0};
+  unsigned char lutable[256] = {0};
   
   // Propt user for threshold value
+  threshold = 128;
   if (!Dialog("Binary Threshold").Add(threshold, "Threshold", 0, 255).Show())
     return false;
   
   // Convert image to grayscale
-  if (!Menu_DanFunctions_Grayscale(image))
+  if (!this -> Menu_DanFunctions_Grayscale(image))
     return false;
   
   // Build lookup table
-  for (int i = 0; i < 255; i++)
+  for (int i = 0; i < 256; i++)
     lutable[i] = (i < threshold ? 0 : 255);
   
   for (int i = 0; i < rows; i++)
@@ -91,7 +92,7 @@ bool Menu_DanFunctions_BinaryThreshold(Image& image)
   return true;
 }
 
-bool Menu_DanFunctions_Posterize(Image& image)
+bool DanProcessor::Menu_DanFunctions_Posterize(Image& image)
 {
   if (image.IsNull())
     return false;
@@ -99,22 +100,47 @@ bool Menu_DanFunctions_Posterize(Image& image)
   int rows = image.Height();
   int cols = image.Width();
   
+  int level;
   int levels;
-  unsigned char lutable[255] = {0};
+  double temp;
+  double lsize;
+  unsigned char lutable[256] = {0};
   
   // Propt user for threshold value
-  if (!Dialog("Posterize Levels").Add(levels, "Levels", 0, 255).Show())
+  levels = 4;
+  if (!Dialog("Posterize Levels").Add(levels, "Levels", 1, 256).Show())
     return false;
   
-  // Build lookup table
-  for (int i = 0; i < 255; i++)
-    lutable[i] = (unsigned char) (i / (256.0 / levels));
+  // Couple calculations
+  lsize = 256.0 / levels;
   
+  // Build lookup table
+  for (int i = 0; i < 256; i++)
+  {
+    // Determine current level
+    level = (int) (i / lsize);
+    
+    // Scale to range and truncate
+    temp = (int) (level * lsize);
+    
+    // Avoid overall darkening by distributing poserize levels
+    // We aren't using floor, ceil, or median; posterize level is determined by
+    //   the level itself.
+    temp += lsize * ((double) level / ((double) levels - 1));
+    
+    // Avoid overflow in either direction just to be safe
+    if (temp > 255) temp = 255;
+    if (temp < 0)   temp = 0;
+    
+    // Save to lookup table (and truncate)
+    lutable[i] = (unsigned char) temp;
+  }
+
+  // Perform posterization on each color of each pixel  
   for (int i = 0; i < rows; i++)
   {
     for (int j = 0; j < cols; j++)
     {
-      // Posterize each color, truncating down
       image[i][j].SetRGB((lutable[image[i][j].Red()]),
                          (lutable[image[i][j].Green()]),
                          (lutable[image[i][j].Blue()]));
@@ -124,7 +150,7 @@ bool Menu_DanFunctions_Posterize(Image& image)
   return true;
 }
 
-bool Menu_DanFunctions_Brighten(Image& image)
+bool DanProcessor::Menu_DanFunctions_Brighten(Image& image)
 {
   if (image.IsNull())
     return false;
@@ -135,9 +161,10 @@ bool Menu_DanFunctions_Brighten(Image& image)
   int brightness;
   int maxpixel;
   int minpixel;
-  unsigned char lutable[255] = {0};
+  unsigned char lutable[256] = {0};
   
   // Propt user for threshold value
+  brightness = 0;
   if (!Dialog("Brightness").Add(brightness, "Brightness", -255, 255).Show())
     return false;
   
@@ -145,7 +172,7 @@ bool Menu_DanFunctions_Brighten(Image& image)
   minpixel = 0 - brightness;
   
   // Build lookup table
-  for (int i = 0; i < 255; i++)
+  for (int i = 0; i < 256; i++)
     lutable[i] = (unsigned char) (i <= minpixel ? 0 :
                                   i >= maxpixel ? 255 :
                                   i + brightness);
@@ -164,7 +191,7 @@ bool Menu_DanFunctions_Brighten(Image& image)
   return true;
 }
 
-bool Menu_DanFunctions_LinearContrast(Image& image)
+bool DanProcessor::Menu_DanFunctions_LinearContrast(Image& image)
 {
   if (image.IsNull())
     return false;
@@ -175,11 +202,13 @@ bool Menu_DanFunctions_LinearContrast(Image& image)
   int lowbound;
   int upbound;
   double scale;
-  unsigned char lutable[255] = {0};
+  unsigned char lutable[256] = {0};
   
   // Propt user for threshold value
+  lowbound = 15;
+  upbound = 240;
   if (!Dialog("Linear Contrast").Add(lowbound, "Minimum Intensity", 0, 255)
-        .add(upbound, "Maximum Intensity", 0, 255).Show())
+        .Add(upbound, "Maximum Intensity", 0, 255).Show())
     return false;
   
   // If reversed, flip 'em
@@ -192,10 +221,12 @@ bool Menu_DanFunctions_LinearContrast(Image& image)
   
   // Calculate scale
   if (lowbound != upbound)
-    scale = 256 / (upbound - lowbound);
+    scale = 255 / (upbound - lowbound);
+  else
+    scale = 255;
   
   // Build lookup table
-  for (int i = 0; i < 255; i++)
+  for (int i = 0; i < 256; i++)
     lutable[i] = (unsigned char) (i <= lowbound ? 0 :
                                   i >= upbound ? 255 :
                                   ((i - lowbound) * scale) + 0.5);
