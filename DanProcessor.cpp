@@ -245,3 +245,47 @@ bool DanProcessor::Menu_DanFunctions_LinearContrast(Image& image)
   return true;
 }
 
+bool DanProcessor::Menu_DanFunctions_8LayerPseudocolor(Image& image)
+{
+  if (image.IsNull())
+    return false;
+  
+  int rows = image.Height();
+  int cols = image.Width();
+  
+  unsigned char lutable[256][3];
+  unsigned char colortable[8][3] = {
+    {0, 0, 0},
+    {255, 0, 0},
+    {255, 255, 0},
+    {0, 255, 0},
+    {0, 255, 255},
+    {0, 0, 255},
+    {255, 0, 255},
+    {255, 255, 255}
+  };
+  
+  // Build lookup table
+  for (int i = 0; i < 256; i++)
+  {
+    lutable[i][0] = colortable[i / 8][0];
+    lutable[i][1] = colortable[i / 8][1];
+    lutable[i][2] = colortable[i / 8][2];
+  }
+  
+  for (int i = 0; i < rows; i++)
+  {
+    for (int j = 0; j < cols; j++)
+    {
+      // Pseudocolor each pixel based on intensity
+      image[i][j].SetRGB(lutable[image[i][j]][0],
+                         lutable[image[i][j]][1],
+                         lutable[image[i][j]][2]);
+    }
+  }
+  
+  return true;
+}
+
+
+

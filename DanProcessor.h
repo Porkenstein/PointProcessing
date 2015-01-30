@@ -13,5 +13,6 @@ class DanProcessor : public QObject
     bool Menu_DanFunctions_Posterize(Image& image);
     bool Menu_DanFunctions_Brighten(Image& image);
     bool Menu_DanFunctions_LinearContrast(Image& image);
+    bool Menu_DanFunctions_8LayerPseudocolor(Image& image);
 };
 
