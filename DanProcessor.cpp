@@ -3,7 +3,7 @@
  *
  * Author - Dan Andrus
  *
- * Date - January 30, 2014
+ * Date - January 30, 2015
  *
  * Details - Defines some basic point processes that can be applied to images.
  * To be used with QT image library, or QT for short.
