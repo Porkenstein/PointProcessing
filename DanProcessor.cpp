@@ -1,5 +1,31 @@
+/***************************************************************************//**
+ * DanProcessor.cpp
+ *
+ * Author - Dan Andrus
+ *
+ * Date - January 30, 2014
+ *
+ * Details - Defines some basic point processes that can be applied to images.
+ * To be used with QT image library, or QT for short.
+ *
+ ******************************************************************************/
+
+
 #include "DanProcessor.h"
 
+
+/***************************************************************************//**
+ * Menu_DanFunctions_Negate
+ * Author - Dan Andrus
+ *
+ * Negates both color and grayscale images.
+ *
+ * Parameters - 
+            image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
 bool DanProcessor::Menu_DanFunctions_Negate(Image& image)
 {
   if (image.IsNull())
@@ -28,6 +54,19 @@ bool DanProcessor::Menu_DanFunctions_Negate(Image& image)
   return true;
 }
 
+
+/***************************************************************************//**
+ * Menu_DanFunctions_Grayscale
+ * Author - Dan Andrus
+ *
+ * Converts a color image to grayscale.
+ *
+ * Parameters - 
+            image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
 bool DanProcessor::Menu_DanFunctions_Grayscale(Image& image)
 {
   if (image.IsNull())
@@ -56,6 +95,22 @@ bool DanProcessor::Menu_DanFunctions_Grayscale(Image& image)
   return true;
 }
 
+
+/***************************************************************************//**
+ * Menu_DanFunctions_BinaryThreshold
+ * Author - Dan Andrus
+ *
+ * Converts both color and grayscale images to binary images. Allows the user
+ * to specify a threshold value, where every pixel with intensity greater than
+ * or equal to that threshold is set to full-bright (white), whereas all pixels
+ * with intensity less than the threshold will be set to full-dark (black).
+ *
+ * Parameters - 
+            image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
 bool DanProcessor::Menu_DanFunctions_BinaryThreshold(Image& image)
 {
   if (image.IsNull())
@@ -92,6 +147,21 @@ bool DanProcessor::Menu_DanFunctions_BinaryThreshold(Image& image)
   return true;
 }
 
+
+/***************************************************************************//**
+ * Menu_DanFunctions_Posterize
+ * Author - Dan Andrus
+ *
+ * Posterizes an image, gradients and giving the image a more cartoonish look.
+ * Essentially limits the color pallette to a small number of colors. Promps
+ * the user for the number of levels to use, with 4 being the default.
+ *
+ * Parameters - 
+            image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
 bool DanProcessor::Menu_DanFunctions_Posterize(Image& image)
 {
   if (image.IsNull())
@@ -150,6 +220,21 @@ bool DanProcessor::Menu_DanFunctions_Posterize(Image& image)
   return true;
 }
 
+
+/***************************************************************************//**
+ * Menu_DanFunctions_Brighten
+ * Author - Dan Andrus
+ *
+ * Prompts the user for a brightness/darkness value to apply to the image.
+ * Performs a simple linear brighten function, which may cause colors to be
+ * washed out.
+ *
+ * Parameters - 
+            image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
 bool DanProcessor::Menu_DanFunctions_Brighten(Image& image)
 {
   if (image.IsNull())
@@ -191,6 +276,24 @@ bool DanProcessor::Menu_DanFunctions_Brighten(Image& image)
   return true;
 }
 
+
+/***************************************************************************//**
+ * Menu_DanFunctions_LinearContrast
+ * Author - Dan Andrus
+ *
+ * Applies a linear contrast stretch to the image. Prompts the user for a
+ * minimum intensity and a maximum intensity, then pixels with intensities
+ * within that range will be scaled to stretch the full range of intensities.
+ * Pixels with intensities greater than the max will be set to full-bright
+ * (white), whereas pixels with intensities lower than the min will be set to
+ * full-dark (black).
+ *
+ * Parameters - 
+            image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
 bool DanProcessor::Menu_DanFunctions_LinearContrast(Image& image)
 {
   if (image.IsNull())
@@ -245,6 +348,22 @@ bool DanProcessor::Menu_DanFunctions_LinearContrast(Image& image)
   return true;
 }
 
+
+/***************************************************************************//**
+ * Menu_DanFunctions_8LevelPseudocolor
+ * Author - Dan Andrus
+ *
+ * Applies an 8-level pseudocolor to an image. Each pixel is given a color based
+ * on intensity. The color order from dark to light is as follows: black, red,
+ * yellow, green, cyan, blue, magenta, and white.
+ * 
+ *
+ * Parameters - 
+            image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
 bool DanProcessor::Menu_DanFunctions_8LevelPseudocolor(Image& image)
 {
   if (image.IsNull())
