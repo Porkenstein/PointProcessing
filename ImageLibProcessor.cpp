@@ -46,12 +46,6 @@ bool ImageLibProcessor::Menu_ImageLibFunctions_ApplyContinuousPseudocolor(Image&
     return pseudocolorGWPalette(image);
 }
 
-bool ImageLibProcessor::Menu_ImageLibFunctions_ViewImageHistogram(Image& image)
-{
-    image.Histogram();
-    return true;
-}
-
 bool ImageLibProcessor::Menu_ImageLibFunctions_AutoContrastStretch(Image& image)
 {
     return adaptiveContrastStretch(image, 0);
@@ -74,5 +68,11 @@ bool ImageLibProcessor::Menu_ImageLibFunctions_EqualizeWithClipping(Image& image
     double arg = 0;
     getParams(arg);
     return histogramEqualizeClip(image, (float)arg);
+}
+
+bool ImageLibProcessor::Menu_ImageLibFunctions_ViewImageHistogram(Image &image)
+{
+    displayHistogram(image.Histogram(), "Image Histogram");
+    return true;
 }
 

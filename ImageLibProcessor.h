@@ -14,10 +14,10 @@ class ImageLibProcessor : public QObject
     bool Menu_ImageLibFunctions_ApplyLogTransform(Image& image);
     bool Menu_ImageLibFunctions_Apply8LevelPseudocolor(Image& image);
     bool Menu_ImageLibFunctions_ApplyContinuousPseudocolor(Image& image);
-    bool Menu_ImageLibFunctions_ViewImageHistogram(Image& image);
     bool Menu_ImageLibFunctions_AutoContrastStretch(Image& image);
     bool Menu_ImageLibFunctions_ModifiedContrastStretch(Image& image);
     bool Menu_ImageLibFunctions_Equalize(Image& image);
     bool Menu_ImageLibFunctions_EqualizeWithClipping(Image& image);
+    bool Menu_ImageLibFunctions_ViewImageHistogram(Image& image);
 };
 

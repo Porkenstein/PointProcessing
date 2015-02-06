@@ -245,7 +245,7 @@ bool DanProcessor::Menu_DanFunctions_LinearContrast(Image& image)
   return true;
 }
 
-bool DanProcessor::Menu_DanFunctions_8LayerPseudocolor(Image& image)
+bool DanProcessor::Menu_DanFunctions_8LevelPseudocolor(Image& image)
 {
   if (image.IsNull())
     return false;
