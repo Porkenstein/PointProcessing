@@ -268,9 +268,9 @@ bool DanProcessor::Menu_DanFunctions_8LevelPseudocolor(Image& image)
   // Build lookup table
   for (int i = 0; i < 256; i++)
   {
-    lutable[i][0] = colortable[i / 8][0];
-    lutable[i][1] = colortable[i / 8][1];
-    lutable[i][2] = colortable[i / 8][2];
+    lutable[i][0] = colortable[i / 32][0];
+    lutable[i][1] = colortable[i / 32][1];
+    lutable[i][2] = colortable[i / 32][2];
   }
   
   for (int i = 0; i < rows; i++)
@@ -278,9 +278,9 @@ bool DanProcessor::Menu_DanFunctions_8LevelPseudocolor(Image& image)
     for (int j = 0; j < cols; j++)
     {
       // Pseudocolor each pixel based on intensity
-      image[i][j].SetRGB(lutable[image[i][j]][0],
-                         lutable[image[i][j]][1],
-                         lutable[image[i][j]][2]);
+      image[i][j].SetRGB(lutable[image[i][j].Intensity()][0],
+                         lutable[image[i][j].Intensity()][1],
+                         lutable[image[i][j].Intensity()][2]);
     }
   }
   
