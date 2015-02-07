@@ -408,3 +408,147 @@ bool DanProcessor::Menu_DanFunctions_8LevelPseudocolor(Image& image)
 
 
 
+/***************************************************************************//**
+ * Menu_DanFunctions_HistogramEqualization
+ * Author - Dan Andrus
+ *
+ * Applies a histogram equalization to an image.
+ * 
+ *
+ * Parameters - 
+            image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
+bool DanProcessor::Menu_DanFunctions_Equalize(Image& image)
+{
+  if (image.IsNull())
+    return false;
+  
+  int rows = image.Height();
+  int cols = image.Width();
+  int total = rows * cols;
+  int tally = 0;
+  int tmp;
+  
+  unsigned char lutable[256];
+  int histogram[256] = {0};
+  
+  // Build histogram
+  for (int i = 0; i < rows; i++)
+  {
+    for (int j = 0; j < cols; j++)
+    {
+      histogram[image[i][j].Intensity()]++;
+    }
+  }
+  
+  
+  // Build lookup table based on histogram
+  for (int i = 0; i < 256; i++)
+  {
+    tally += histogram[i];
+    tmp = (int) (tally / (total / 256.0));
+    if (tmp < 0) tmp = 0;
+    if (tmp > 255) tmp = 255;
+    lutable[i] = tmp;
+  }
+  
+  for (int i = 0; i < rows; i++)
+  {
+    for (int j = 0; j < cols; j++)
+    {
+      // Pseudocolor each pixel based on intensity
+      image[i][j].SetIntensity(lutable[image[i][j].Intensity()]);
+    }
+  }
+  
+  return true;
+}
+
+
+
+/***************************************************************************//**
+ * Menu_DanFunctions_HistogramEqualizationWithClipping
+ * Author - Dan Andrus
+ *
+ * Applies a histogram equalization with optional clipping to an image.
+ * 
+ *
+ * Parameters - 
+            image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
+bool DanProcessor::Menu_DanFunctions_EqualizeWithClipping
+  (Image& image)
+{
+  if (image.IsNull())
+    return false;
+  
+  int rows = image.Height();
+  int cols = image.Width();
+  int total = rows * cols;
+  int tally = 0;
+  int tmp;
+  double max;
+  
+  unsigned char lutable[256];
+  int histogram[256] = {0};
+  
+  // Propt user for threshold value
+  max = 0;
+  if (!Dialog("Ignore Percentage").Add(max, "Percentage", 0, 100).Show())
+    return false;
+  
+  // Make sure max is greater than 0, otherwise we get a division by 0
+  if (max == 0)
+    return false;
+  
+  // Build histogram
+  for (int i = 0; i < rows; i++)
+  {
+    for (int j = 0; j < cols; j++)
+    {
+      histogram[image[i][j].Intensity()]++;
+    }
+  }
+  
+  // Format max for histogram
+  max = (int) (total * (max / 100));
+  
+  // Clip histogram and recalculate total
+  total = 0;
+  for (int i = 0; i < 256; i++)
+  {
+    if (histogram[i] > max)
+      histogram[i] = max;
+    total += histogram[i];
+  }
+  
+  // Build lookup table based on histogram
+  for (int i = 0; i < 256; i++)
+  {
+    tally += histogram[i];
+    tmp = (int) (tally / (total / 256.0));
+    if (tmp < 0) tmp = 0;
+    if (tmp > 255) tmp = 255;
+    lutable[i] = (unsigned char) tmp;
+  }
+  
+  for (int i = 0; i < rows; i++)
+  {
+    for (int j = 0; j < cols; j++)
+    {
+      // Pseudocolor each pixel based on intensity
+      image[i][j].SetIntensity(lutable[image[i][j].Intensity()]);
+    }
+  }
+  
+  return true;
+}
+
+
+
