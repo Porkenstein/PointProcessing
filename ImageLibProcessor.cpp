@@ -1,3 +1,15 @@
+/***************************************************************************//**
+ * ImageLibProcessor.cpp
+ *
+ * Author - Derek Stotz, QtImageLib by Dr. John Weiss
+ *
+ * Date - January 30, 2015
+ *
+ * Implementations of the QtImageLib functions.  These are entirely "bare-bones",
+ * and not error checked or descriptive, as they are intended only for testing.
+ * Function descriptions can be found in the QtImageLib documentation.
+ ******************************************************************************/
+
 #include "ImageLibProcessor.h"
 
 bool ImageLibProcessor::Menu_ImageLibFunctions_ConvertToGreyscale(Image& image)
@@ -44,18 +56,6 @@ bool ImageLibProcessor::Menu_ImageLibFunctions_Apply8LevelPseudocolor(Image& ima
 bool ImageLibProcessor::Menu_ImageLibFunctions_ApplyContinuousPseudocolor(Image& image)
 {
     return pseudocolorGWPalette(image);
-}
-
-bool ImageLibProcessor::Menu_ImageLibFunctions_AutoContrastStretch(Image& image)
-{
-    return adaptiveContrastStretch(image, 0);
-}
-
-bool ImageLibProcessor::Menu_ImageLibFunctions_ModifiedContrastStretch(Image& image)
-{
-    int arg = 0;
-    getParams(arg);
-    return adaptiveContrastStretch(image, arg);
 }
 
 bool ImageLibProcessor::Menu_ImageLibFunctions_Equalize(Image& image)
